@@ -5,9 +5,7 @@ import com.educandoweb.workshopmongo.dto.UserDTO;
 import com.educandoweb.workshopmongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -27,6 +25,12 @@ public class UseResource {
         List<User> list = service.findAll();
         List<UserDTO> listDto = list.stream().map(UserDTO::new).toList();
         return ResponseEntity.ok().body(listDto);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(new UserDTO(user));
     }
 
 }
