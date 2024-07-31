@@ -2,7 +2,6 @@ package com.educandoweb.workshopmongo.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.Serial;
 import java.io.Serializable;
