@@ -1,6 +1,7 @@
 package com.educandoweb.workshopmongo.service;
 
 import com.educandoweb.workshopmongo.domain.User;
+import com.educandoweb.workshopmongo.dto.UserDTO;
 import com.educandoweb.workshopmongo.repository.UserRepository;
 import com.educandoweb.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+
     public List<User> findAll() {
         return repo.findAll();
     }
@@ -22,6 +24,14 @@ public class UserService {
     public User findById(String id) {
         Optional<User> user = repo.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException(id));
+    }
+
+    public User insert(User user) {
+        return repo.save(user);
+    }
+
+    public User fromDTO(UserDTO dto) {
+        return new User(dto.getId(), dto.getName(), dto.getEmail());
     }
 
 
