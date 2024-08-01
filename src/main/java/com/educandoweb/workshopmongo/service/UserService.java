@@ -5,6 +5,7 @@ import com.educandoweb.workshopmongo.dto.UserDTO;
 import com.educandoweb.workshopmongo.repository.UserRepository;
 import com.educandoweb.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,20 @@ public class UserService {
 
     public User insert(User user) {
         return repo.save(user);
+    }
+
+    public void delete(String id) {
+        try {
+            if (repo.existsById(id)) {
+                repo.deleteById(id);
+            } else {
+                throw new ObjectNotFoundException(id);
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(e.getMessage());
+        }
+
+
     }
 
     public User fromDTO(UserDTO dto) {
