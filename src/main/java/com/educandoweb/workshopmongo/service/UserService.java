@@ -4,7 +4,8 @@ import com.educandoweb.workshopmongo.domain.User;
 import com.educandoweb.workshopmongo.dto.UserDTO;
 import com.educandoweb.workshopmongo.repository.UserRepository;
 import com.educandoweb.workshopmongo.service.exception.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -14,27 +15,39 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository repo;
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<User> findAll() {
-        return repo.findAll();
+        return userRepository.findAll();
     }
 
     public User findById(String id) {
-        Optional<User> user = repo.findById(id);
+        Optional<User> user = userRepository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException(id));
     }
 
     public User insert(User user) {
-        return repo.save(user);
+        log.info("Searching User with email {}", user.getEmail());
+        userRepository.findByEmail(user.getEmail()).ifPresent(x -> {
+            log.error("User with email {} already exists", user.getEmail());
+            throw new DataIntegrityViolationException("Email already exists");
+        });
+
+        User createdUser = userRepository.save(user);
+        log.info("Created User: {}", createdUser);
+        return createdUser;
     }
 
     public void delete(String id) {
         try {
-            if (repo.existsById(id)) {
-                repo.deleteById(id);
+            if (userRepository.existsById(id)) {
+                userRepository.deleteById(id);
             } else {
                 throw new ObjectNotFoundException(id);
             }
@@ -47,7 +60,7 @@ public class UserService {
         try {
             User user = findById(obj.getId());
             updateData(user, obj);
-            repo.save(user);
+            userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException(e.getMessage());
         }
