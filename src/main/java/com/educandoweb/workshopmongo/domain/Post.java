@@ -3,10 +3,8 @@ package com.educandoweb.workshopmongo.domain;
 import com.educandoweb.workshopmongo.dto.AuthorDTO;
 import com.educandoweb.workshopmongo.dto.CommentDTO;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.xml.stream.events.Comment;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
