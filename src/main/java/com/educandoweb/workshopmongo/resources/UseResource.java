@@ -1,5 +1,6 @@
 package com.educandoweb.workshopmongo.resources;
 
+import com.educandoweb.workshopmongo.domain.Post;
 import com.educandoweb.workshopmongo.domain.User;
 import com.educandoweb.workshopmongo.dto.UserDTO;
 import com.educandoweb.workshopmongo.service.UserService;
@@ -15,8 +16,11 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UseResource {
 
-    @Autowired
-    private UserService service;
+    private final UserService service;
+
+    public UseResource(UserService service) {
+        this.service = service;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -46,11 +50,17 @@ public class UseResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update (@PathVariable String id, @RequestBody UserDTO objDto){
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UserDTO objDto) {
         User obj = service.fromDTO(objDto);
         obj.setId(id);
         service.update(obj);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPost(@PathVariable String id) {
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
     }
 
 }
