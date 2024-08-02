@@ -1,6 +1,7 @@
 package com.educandoweb.workshopmongo.dto;
 
 import com.educandoweb.workshopmongo.domain.User;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serial;
 import java.io.Serializable;

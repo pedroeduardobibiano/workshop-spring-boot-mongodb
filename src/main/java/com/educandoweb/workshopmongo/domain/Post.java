@@ -1,12 +1,17 @@
 package com.educandoweb.workshopmongo.domain;
 
 import com.educandoweb.workshopmongo.dto.AuthorDTO;
+import com.educandoweb.workshopmongo.dto.CommentDTO;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.xml.stream.events.Comment;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Document
@@ -21,6 +26,9 @@ public class Post implements Serializable {
     private String body;
     private AuthorDTO author;
 
+
+    private List<CommentDTO> comments = new ArrayList<>();
+
     public AuthorDTO getAuthor() {
         return author;
     }
@@ -30,6 +38,14 @@ public class Post implements Serializable {
     }
 
     public Post() {
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 
     public Post(String id, LocalDate date, String title, String body, AuthorDTO author) {
