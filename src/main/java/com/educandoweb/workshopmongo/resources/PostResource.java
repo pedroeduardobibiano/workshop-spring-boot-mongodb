@@ -18,6 +18,12 @@ public class PostResource {
         this.postService = postService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<Post>> findById(Post post) {
+        List<Post> posts = postService.findAll();
+        return ResponseEntity.ok().body(posts);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<Post> findById(@PathVariable String id) {
         Post post = postService.findById(id);

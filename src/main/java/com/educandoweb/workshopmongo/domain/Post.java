@@ -2,6 +2,7 @@ package com.educandoweb.workshopmongo.domain;
 
 import com.educandoweb.workshopmongo.dto.AuthorDTO;
 import com.educandoweb.workshopmongo.dto.CommentDTO;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,23 +28,7 @@ public class Post implements Serializable {
 
     private List<CommentDTO> comments = new ArrayList<>();
 
-    public AuthorDTO getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(AuthorDTO author) {
-        this.author = author;
-    }
-
     public Post() {
-    }
-
-    public List<CommentDTO> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentDTO> comments) {
-        this.comments = comments;
     }
 
     public Post(String id, LocalDate date, String title, String body, AuthorDTO author) {
@@ -52,6 +37,14 @@ public class Post implements Serializable {
         this.title = title;
         this.body = body;
         this.author = author;
+    }
+
+    public AuthorDTO getAuthorDTO() {
+        return author;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
     }
 
     public String getId() {
@@ -86,9 +79,6 @@ public class Post implements Serializable {
         this.body = body;
     }
 
-    public AuthorDTO getAuthorDTO() {
-        return author;
-    }
 
     public void setAuthorDTO(AuthorDTO authorDTO) {
         this.author = authorDTO;
