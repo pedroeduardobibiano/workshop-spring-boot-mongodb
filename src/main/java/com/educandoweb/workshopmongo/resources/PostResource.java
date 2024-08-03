@@ -6,11 +6,15 @@ import com.educandoweb.workshopmongo.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/posts")
 public class PostResource {
+
+
 
     private final PostService postService;
 
@@ -36,6 +40,21 @@ public class PostResource {
         List<Post> posts = postService.findByTitle(text);
         return ResponseEntity.ok().body(posts);
     }
+
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+        text = URL.decodeParam(text);
+        LocalDate min = URL.convertDate(minDate, LocalDate.of(1970, 1, 1));
+        LocalDate max = URL.convertDate(maxDate, LocalDate.now());
+
+        List<Post> posts = postService.fullSearch(text, min, max);
+        return ResponseEntity.ok().body(posts);
+    }
+
+
 
 
 }
